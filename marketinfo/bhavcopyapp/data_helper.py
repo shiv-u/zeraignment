@@ -48,7 +48,7 @@ class StorageHelper:
 
         self.previous_csv_file_name = ((self.previous_zip_file_name.split(".")[0]).split("_")[0])+".CSV"
 
-    def save_to_redis(self,csv_file_name):
+    def save_to_redis(self,csv_file_name,data_mode):
         
         with open(self.folder_dir+csv_file_name,"r") as csv_file:
             csv_reader =  csv.reader(csv_file) 
@@ -61,35 +61,41 @@ class StorageHelper:
                                                     "low":row[6],
                                                     "close":row[7]}))
             
-            self.redis_instance.set("previous_data","True")
+            self.redis_instance.set(data_mode,"True")
     
     def get_records(self,record_name):
-        if self.redis_instance.get("current_data") is None:
+        if (self.redis_instance.get("current_data") is None) or (self.redis_instance.get("current_data").decode() == "False"):
 
             # fetch previous day record and send the response back
 
-            if self.redis_instance.get("previous_data") is None:
-                self.download_data()
-                if self.redis_instance.get("previous_data") is None:
-                    return (None,False)
+            self.download_data("current_data",self.current_zip_file_name,self.current_csv_file_name)
 
+            if self.redis_instance.get("current_data").decode() == "False":
+                print("Current data not available therefore downloading previous day's data")
+
+                if (self.redis_instance.get("previous_data") is None):
+
+                    self.download_data("previous_data",self.previous_zip_file_name,self.previous_csv_file_name)
+
+                    if self.redis_instance.get("previous_data").decode() == "False":
+                        return (None,False)
+
+                    else:
+                        return (self.redis_instance.get(record_name),False)
+                
                 else:
+                    print("returning previous day's data")
                     return (self.redis_instance.get(record_name),False)
             
-            else:
-                print("success")
-                return (self.redis_instance.get(record_name),False)
-         
-        else:
-            print(record_name)
-            return (self.redis_instance.get(record_name),True)
+        print("returning current day's data")
+        return (self.redis_instance.get(record_name),True)
 
 
 
 
 # Create your views here.
 
-    def download_data(self):
+    def download_data(self,data_mode,zip_file_name,csv_file_name):
 
         
         print("Downloading previous data")
@@ -97,17 +103,17 @@ class StorageHelper:
 
         hdr = {'User-Agent': 'Mozilla/5.0'}
 
-        response = requests.get(self.bse_link+self.previous_zip_file_name,stream=True,headers=hdr)
+        response = requests.get(self.bse_link+zip_file_name,stream=True,headers=hdr)
         
 
         if response.status_code != requests.codes.ok :
             # if previous data is not available return no data
-            self.redis_instance.set("previous_data","False")
+            self.redis_instance.set(data_mode,"False")
             return 
   
         # print(os.listdir("./bhavcopyapp/"))
 
-        with open(self.folder_dir+self.previous_zip_file_name,"wb") as csv_file:
+        with open(self.folder_dir+zip_file_name,"wb") as csv_file:
             # lf = tempfile.NamedTemporaryFile()
             for block in response.iter_content(1024*8):
                 if not block:
@@ -117,13 +123,13 @@ class StorageHelper:
 
             csv_file.close()
 
-        with zipfile.ZipFile(self.folder_dir+self.previous_zip_file_name, 'r') as zip_ref:
+        with zipfile.ZipFile(self.folder_dir+zip_file_name, 'r') as zip_ref:
             zip_ref.extractall(self.folder_dir)
         
-        os.remove(self.folder_dir+self.previous_zip_file_name)
+        os.remove(self.folder_dir+zip_file_name)
 
         print("Previous Data downloaded")
-        self.save_to_redis(self.previous_csv_file_name)
+        self.save_to_redis(csv_file_name,data_mode)
 
 
 
