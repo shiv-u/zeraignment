@@ -129,7 +129,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
 
-DOCKER = False
+DOCKER = True
 
 if DOCKER:
     REDIS_HOST = 'redis'

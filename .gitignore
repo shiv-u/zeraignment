@@ -4,3 +4,4 @@ marketinfo/bhavcopyapp/files/*
 marketinfo/bhavcopyapp/migrations/__pycache__/*
 marketinfo/__pycache__/*
 marketinfo/media/*
+marketinfo/config.log
