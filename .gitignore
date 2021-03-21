@@ -1,7 +1,6 @@
-marketinfo/marketinfo/__pycache__/*
-marketinfo/bhavcopyapp/__pycache__/*
-marketinfo/bhavcopyapp/files/*
-marketinfo/bhavcopyapp/migrations/__pycache__/*
 marketinfo/__pycache__/*
-marketinfo/media/*
-marketinfo/config.log
+bhavcopyapp/__pycache__/*
+bhavcopyapp/files/*
+bhavcopyapp/migrations/__pycache__/*
+media/*
+config.log
