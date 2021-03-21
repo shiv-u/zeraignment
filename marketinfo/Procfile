@@ -1,1 +1,1 @@
-web: gunicorn bhavcopyapp.wsgi --log-file -
+app: gunicorn bhavcopyapp.wsgi --log-file -
