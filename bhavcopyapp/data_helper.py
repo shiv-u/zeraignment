@@ -86,7 +86,7 @@ class StorageHelper:
             if self.redis_instance.get("current_data").decode() == "False":
                 print("Current data not available")
 
-                if (self.redis_instance.get("previous_data") is None):
+                if (self.redis_instance.get("previous_data") is None or self.redis_instance.get("previous_data").decode() == "False"):
                     #if previous day record is not found return (None,false)
                     print("Downloading previous data")
                     self.download_data("previous_data",self.previous_zip_file_name,self.previous_csv_file_name)

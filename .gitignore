@@ -4,3 +4,4 @@ bhavcopyapp/files/*
 bhavcopyapp/migrations/__pycache__/*
 media/*
 config.log
+.gitignore.swp
