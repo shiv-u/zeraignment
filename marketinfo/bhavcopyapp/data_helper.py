@@ -38,7 +38,7 @@ class StorageHelper:
         self.previous_month = self.previous_date.strftime("%m")
         self.previous_year = self.previous_date.strftime("%y")
 
-
+        self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
 
         self.current_zip_file_name = f"EQ{self.current_day}{self.current_month}{self.current_year}_CSV.ZIP"
 
@@ -62,8 +62,10 @@ class StorageHelper:
                                                     "close":row[7]}))
             
             self.redis_instance.set(data_mode,"True")
+            self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
     
     def get_records(self,record_name):
+        date = self.redis_instance.get("date").decode()
         if (self.redis_instance.get("current_data") is None) or (self.redis_instance.get("current_data").decode() == "False"):
 
             # fetch previous day record and send the response back
@@ -71,24 +73,28 @@ class StorageHelper:
             self.download_data("current_data",self.current_zip_file_name,self.current_csv_file_name)
 
             if self.redis_instance.get("current_data").decode() == "False":
-                print("Current data not available therefore downloading previous day's data")
+                print("Current data not available")
 
                 if (self.redis_instance.get("previous_data") is None):
-
+                    #if previous day record is not found return (None,false)
+                    print("Downloading previous data")
                     self.download_data("previous_data",self.previous_zip_file_name,self.previous_csv_file_name)
 
                     if self.redis_instance.get("previous_data").decode() == "False":
-                        return (None,False)
+                        return (None,"",False)
 
                     else:
-                        return (self.redis_instance.get(record_name),False)
+                        save_to_csv()
+                        return (self.redis_instance.get(record_name),date,False)
                 
                 else:
-                    print("returning previous day's data")
-                    return (self.redis_instance.get(record_name),False)
+                    # return previous day records if found
+                    print("Returning previous day's data")
+                    return (self.redis_instance.get(record_name),date,False)
             
         print("returning current day's data")
-        return (self.redis_instance.get(record_name),True)
+
+        return (self.redis_instance.get(record_name),date,True)
 
 
 
@@ -98,7 +104,7 @@ class StorageHelper:
     def download_data(self,data_mode,zip_file_name,csv_file_name):
 
         
-        print("Downloading previous data")
+        print(f"Downloading {data_mode} data")
         
 
         hdr = {'User-Agent': 'Mozilla/5.0'}
@@ -128,8 +134,8 @@ class StorageHelper:
         
         os.remove(self.folder_dir+zip_file_name)
 
-        print("Previous Data downloaded")
-        self.save_to_redis(csv_file_name,data_mode)
+        print(f"{data_mode} Data downloaded")
+        self.save_to_redis(csv_file_name,data_mode,)
 
 
 

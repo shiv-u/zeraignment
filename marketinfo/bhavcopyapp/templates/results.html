@@ -1,0 +1,39 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <h1></h1>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 m-auto">
+          {% if current_data %}
+        <h1 class="text-center display-4 my-4">Current day ({{date}}) Market data for {{ stock_name }}</h1>
+            {% else %}
+        <h1 class="text-center display-4 my-4">Today's Data is still not available therefore displaying Market data for {{ stock_name }} on {{date}}</h1>
+          {% endif %}
+        <div class="container" >
+                    <div class="row text-center display-flex" >
+
+        {% for data_key, data_value in data.items %}
+        <div class="col-lg-2 col-xs-4" >
+            <div class="img-thumbnail rounded" >
+             
+                <h5>{{ data_key }}</h5>
+                <h5>{{ data_value }}</h5>
+              
+            </a>
+        </div>
+     
+     </div>
+        {% endfor %}
+        
+        <a href="/media/{{ file_link }}" download>Download Record</a>  
+        </div>
+    </div>
+  </div>
+    </div>
+    </div>
+    </body>
+  {% endblock %}

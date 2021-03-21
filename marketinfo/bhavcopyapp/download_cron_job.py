@@ -56,6 +56,7 @@ class DownloadManager:
                                                     "close":row[7]}))
             
             self.redis_instance.set("current_data","True")
+            self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
     
     
     def download_data(self):
