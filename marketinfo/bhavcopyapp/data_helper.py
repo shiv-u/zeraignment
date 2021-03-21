@@ -38,9 +38,11 @@ class StorageHelper:
         self.previous_month = self.previous_date.strftime("%m")
         self.previous_year = self.previous_date.strftime("%y")
 
-        self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
+        # self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
 
         self.current_zip_file_name = f"EQ{self.current_day}{self.current_month}{self.current_year}_CSV.ZIP"
+
+        # self.current_zip_file_name = f"EQ1903"}{"21"}_CSV.ZIP"
 
         self.current_csv_file_name = ((self.current_zip_file_name.split(".")[0]).split("_")[0])+".CSV"
 
@@ -49,9 +51,11 @@ class StorageHelper:
         self.previous_csv_file_name = ((self.previous_zip_file_name.split(".")[0]).split("_")[0])+".CSV"
 
     def save_to_redis(self,csv_file_name,data_mode):
+
+       
         
         with open(self.folder_dir+csv_file_name,"r") as csv_file:
-            csv_reader =  csv.reader(csv_file) 
+            csv_reader =  csv.reader(csv_file)
             headers = next(csv_reader)
 
             for row in csv_reader:
@@ -62,10 +66,18 @@ class StorageHelper:
                                                     "close":row[7]}))
             
             self.redis_instance.set(data_mode,"True")
-            self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
+            if data_mode == "current_data":
+                date = self.current_date.strftime("%d/%m/%y")
+            else:
+                date = self.previous_date.strftime("%d/%m/%y")
+
+            
+
+            self.redis_instance.set("date",date)
+            
     
     def get_records(self,record_name):
-        date = self.redis_instance.get("date").decode()
+        
         if (self.redis_instance.get("current_data") is None) or (self.redis_instance.get("current_data").decode() == "False"):
 
             # fetch previous day record and send the response back
@@ -84,16 +96,17 @@ class StorageHelper:
                         return (None,"",False)
 
                     else:
-                        save_to_csv()
+                        date = self.redis_instance.get("date").decode()
                         return (self.redis_instance.get(record_name),date,False)
                 
                 else:
                     # return previous day records if found
                     print("Returning previous day's data")
+                    date = self.redis_instance.get("date").decode()
                     return (self.redis_instance.get(record_name),date,False)
             
         print("returning current day's data")
-
+        date = self.redis_instance.get("date").decode()
         return (self.redis_instance.get(record_name),date,True)
 
 

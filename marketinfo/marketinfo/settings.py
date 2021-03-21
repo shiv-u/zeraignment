@@ -26,7 +26,7 @@ SECRET_KEY = 'nd=u1khf_(bj*w#8k9u2gjg#)qu!qch!hnlk#c%rm$7wd&t!8^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -39,14 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
-    'bhavcopyapp',
-    'django_crontab'
+    'bhavcopyapp.apps.BhavcopyappConfig',
+    'rest_framework'
 ]
 
-CRONJOBS = [
-    ('1 18 * * *','bhavcopyapp.download_cron_job.start_job','>> cron.log' ),
-]
+
 
 
 MIDDLEWARE = [
@@ -132,5 +129,10 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
 
-REDIS_HOST = 'localhost'
+DOCKER = False
+
+if DOCKER:
+    REDIS_HOST = 'redis'
+else:
+    REDIS_HOST = "localhost"
 REDIS_PORT = 6379

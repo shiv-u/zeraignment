@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.http.response import JsonResponse
 from django.views.static import serve
-
+from rest_framework.decorators import api_view
+from django.http import FileResponse
 from django.conf import settings
 from datetime import datetime
 
@@ -18,10 +19,13 @@ import redis
 import csv
 import json
 
-s = data_helper.StorageHelper()
 
 
+@api_view(['GET'])
 def get_data(request):
+
+    s = data_helper.StorageHelper() 
+
     # print(redis_instance.get("HDFC        "))
 
 
@@ -80,5 +84,18 @@ def download_data(request):
 
 
 def index(request):
-    print("media",settings.MEDIA_DIR)
+    print(request)
     return render(request,"index.html")
+
+def servefiles(request):
+    # Create the HttpResponse object with the appropriate headers.
+    file_name = request.GET["name"]
+    filed = open('./media/'+file_name, 'rb')
+    response = HttpResponse(filed,content_type='x-zip-compressed')
+    response['Content-Disposition'] = f'attachment; filename={file_name}'
+    return response
+    # 
+    # 
+
+    # response = FileResponse(filed,filename=file_name)
+    

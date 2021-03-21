@@ -61,44 +61,47 @@ class DownloadManager:
     
     def download_data(self):
 
-        
-        print("Downloading current data",self.current_date)
-        
+        try:
 
-        hdr = {'User-Agent': 'Mozilla/5.0'}
+            
+            print("Downloading current data",self.current_date)
+            
 
-        response = requests.get(self.bse_link+self.zip_file_name,stream=True,headers=hdr)
-        
+            hdr = {'User-Agent': 'Mozilla/5.0'}
 
-        if response.status_code != requests.codes.ok :
-            # if current data is not available
-            print("Still data is not available for",self.current_date)
-            self.redis_instance.set("current_data","False")
-            return 
-  
-        # print(os.listdir("./bhavcopyapp/"))
+            response = requests.get(self.bse_link+self.zip_file_name,stream=True,headers=hdr)
+            
 
-        with open(self.folder_dir+self.zip_file_name,"wb") as csv_file:
-            # lf = tempfile.NamedTemporaryFile()
-            for block in response.iter_content(1024*8):
-                if not block:
-                    break
+            if response.status_code != requests.codes.ok :
+                # if current data is not available
+                print("Still data is not available for",self.current_date)
+                self.redis_instance.set("current_data","False")
+                return 
+    
+            # print(os.listdir("./bhavcopyapp/"))
+            
+            print(f"status{response.status_code},zip file {self.zip_file_name}")
+            with open(self.folder_dir+self.zip_file_name,"wb") as zip_file:
+                print("inside opening folder")
+                # lf = tempfile.NamedTemporaryFile()
+                for block in response.iter_content(1024*8):
+                    if not block:
+                        break
 
-                csv_file.write(block)
+                    zip_file.write(block)
 
-            csv_file.close()
+                zip_file.close()
 
-        with zipfile.ZipFile(self.folder_dir+self.zip_file_name, 'r') as zip_ref:
-            zip_ref.extractall(self.folder_dir)
-        
-        os.remove(self.folder_dir+self.zip_file_name)
+            with zipfile.ZipFile(self.folder_dir+self.zip_file_name, 'r') as zip_ref:
+                zip_ref.extractall(self.folder_dir)
+            
+            if os.path.exists(self.folder_dir+self.zip_file_name):
+                os.remove(self.folder_dir+self.zip_file_name)
 
-        print("Current Data downloaded")
-        self.save_to_redis(self.csv_file_name)
-
-def start_job():
-    download_manager = DownloadManager()
-    download_manager.download_data()
+            print("Current Data downloaded")
+            self.save_to_redis(self.csv_file_name)
+        except Exception as e:
+            print("exception is ",e)
 
 
 
