@@ -26,9 +26,6 @@ def get_data(request):
 
     s = data_helper.StorageHelper() 
 
-    # print(redis_instance.get("HDFC        "))
-
-
     ticker_name = (request.GET["stockname"].strip()).upper()
     ticker_record = s.get_records(ticker_name)
 
@@ -48,10 +45,6 @@ def get_data(request):
         return render(request,"404.html",{"stock_name":ticker_name})
 
 
-
-    # return JsonResponse(json.loads(redis_instance.get("HDFC")))
-
-
 def save_to_csv_file(json_data,ticker_name,date):
     date = date.replace("/","")
     
@@ -68,34 +61,5 @@ def save_to_csv_file(json_data,ticker_name,date):
 
     return file_name
 
-
-
-# def download_file(request):
-#     # return HttpResponse(request.GET["filename"])
-#     file_name = request.GET["filename"]
-#     path = f'{file_name}'
-#     return serve(request, os.path.basename(path), os.path.dirname(path))
-
-    
-
-
-def download_data(request):
-    pass
-
-
 def index(request):
-    print(request)
     return render(request,"index.html")
-
-def servefiles(request):
-    # Create the HttpResponse object with the appropriate headers.
-    file_name = request.GET["name"]
-    filed = open('./media/'+file_name, 'rb')
-    response = HttpResponse(filed,content_type='x-zip-compressed')
-    response['Content-Disposition'] = f'attachment; filename={file_name}'
-    return response
-    # 
-    # 
-
-    # response = FileResponse(filed,filename=file_name)
-    

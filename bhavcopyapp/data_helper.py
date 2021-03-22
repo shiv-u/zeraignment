@@ -21,7 +21,7 @@ class StorageHelper:
         self.bse_link = "https://www.bseindia.com/download/BhavCopy/Equity/"
         self.folder_dir = "./bhavcopyapp/files/"
 
-        self.redis_instance = redis.from_url("redis://:p4c298d72cc4008b0e3ae6e554ad4ae28abe1b5c7511df22938d14e0af85a1b30@ec2-52-31-178-100.eu-west-1.compute.amazonaws.com:31069")
+        self.redis_instance = redis.from_url(os.environ.get("REDIS_URL"))
         
 
         IST = pytz.timezone("Asia/Kolkata")
@@ -37,11 +37,10 @@ class StorageHelper:
         self.previous_month = self.previous_date.strftime("%m")
         self.previous_year = self.previous_date.strftime("%y")
 
-        # self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
+       
 
         self.current_zip_file_name = f"EQ{self.current_day}{self.current_month}{self.current_year}_CSV.ZIP"
 
-        # self.current_zip_file_name = f"EQ1903"}{"21"}_CSV.ZIP"
 
         self.current_csv_file_name = ((self.current_zip_file_name.split(".")[0]).split("_")[0])+".CSV"
 
