@@ -24,7 +24,7 @@ MEDIA_DIR = os.path.join(BASE_DIR,"media")
 SECRET_KEY = 'nd=u1khf_(bj*w#8k9u2gjg#)qu!qch!hnlk#c%rm$7wd&t!8^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -131,7 +131,7 @@ MEDIA_ROOT = MEDIA_DIR
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = "/media/"
 
-DOCKER = True
+DOCKER = False
 
 if DOCKER:
     REDIS_HOST = 'redis'
