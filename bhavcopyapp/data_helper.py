@@ -21,8 +21,10 @@ class StorageHelper:
         self.bse_link = "https://www.bseindia.com/download/BhavCopy/Equity/"
         self.folder_dir = "./bhavcopyapp/files/"
 
-        self.redis_instance = redis.from_url(os.environ.get("REDIS_URL"))
-        # self.redis_instance  = redis.StrictRedis(host="localhost",port=6379,db=0)
+        #comment while running in localhost or in docker
+        # self.redis_instance = redis.from_url(os.environ.get("REDIS_URL"))
+        # uncomment while running in localhost or using docker
+        self.redis_instance  = redis.StrictRedis(host=settings.REDIS_HOST,port=6379,db=0)
         
 
         IST = pytz.timezone("Asia/Kolkata")
