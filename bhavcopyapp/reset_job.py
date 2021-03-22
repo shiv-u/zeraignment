@@ -16,8 +16,8 @@ import json
 
 class DataResetter:
     def __init__(self):
-        self.redis_instance = redis.from_url(os.environ.get("REDIS_URL"))
-        # self.redis_instance  = redis.StrictRedis(host="localhost",port=6379,db=0)
+        # self.redis_instance = redis.from_url(os.environ.get("REDIS_URL"))
+        self.redis_instance  = redis.StrictRedis(host="localhost",port=6379,db=0)
     def reset(self):
         print("resetting current data")
         self.redis_instance.set("current_data","False")
