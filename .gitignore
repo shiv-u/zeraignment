@@ -3,3 +3,4 @@ bhavcopyapp/__pycache__/*
 bhavcopyapp/migrations/__pycache__/*
 config.log
 .gitignore.swp
+static/

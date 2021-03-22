@@ -24,7 +24,7 @@ MEDIA_DIR = os.path.join(BASE_DIR,"media")
 SECRET_KEY = 'nd=u1khf_(bj*w#8k9u2gjg#)qu!qch!hnlk#c%rm$7wd&t!8^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'marketinfo.urls'
@@ -127,6 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = MEDIA_DIR
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = "/media/"
 
 DOCKER = True
@@ -136,3 +138,5 @@ if DOCKER:
 else:
     REDIS_HOST = "localhost"
 REDIS_PORT = 6379
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

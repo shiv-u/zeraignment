@@ -1,9 +1,8 @@
 {% extends 'header.html' %}
-{% load static %}
 {% block content %}
 
-
-<div style="background:url(/media/BeFunky-collage2.jpg);  height: 100%;" class="page-holder bg-cover" >
+{% load static %}
+<div id="bgc" style="background-image: url(/static/bhavcopy/bg.jpg);height: 100%;" class="page-holder bg-cover" >
   <div class="container">
     <form action="/bhavcopy/get_data">
     <div class="row">
@@ -31,7 +30,7 @@
         myStyle:{
           color:"white",
           backgroundColor: "rgba(0,0,0)",
-          backgroundColor: "rgba(0,0,0, 0.4)",
+          backgroundColor: "rgba(0,0,0, 0.7)",
           fontWeight: "bold"
         
         }
