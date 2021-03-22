@@ -5,8 +5,8 @@ class BhavcopyappConfig(AppConfig):
     name = 'bhavcopyapp'
 
     def ready(self):
-        from bhavcopyapp import downloader
+        from bhavcopyapp import jobs
         print("Starting download")
-        downloader.start()
+        jobs.start()
 
 
