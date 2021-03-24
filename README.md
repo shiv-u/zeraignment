@@ -19,5 +19,5 @@ Zerodha assignment
 
 ## Running using docker-compose -
 - If you want to run this app using docker-compose create a folder called marketinfo and move bhavcopyapp, db.sqlite3, manage.py, marketinfo, media
-inside the create directory. In `marketinfo/settings.p`y set `DOCKER = True`
-- Then run `sudo docker-compose up --build`, then type http://localhost:8000/bhavcopy/ in your browser to view this app.
+inside the create directory.
+- Then run `python marketinfo/manage.py ; sudo docker-compose up --build`, then type http://localhost:8000/bhavcopy/ in your browser to view this app.
