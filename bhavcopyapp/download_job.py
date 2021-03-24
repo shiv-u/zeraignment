@@ -15,7 +15,6 @@ import csv
 import json
 
 
-
 class DownloadManager:
 
     def __init__(self):
@@ -47,6 +46,7 @@ class DownloadManager:
     def save_to_redis(self,csv_file_name):
         
         with open(self.folder_dir+csv_file_name,"r") as csv_file:
+            print("saving to redis",csv_file_name,self.redis_instance.get("current_data"))
             csv_reader =  csv.reader(csv_file) 
             headers = next(csv_reader)
 
@@ -59,6 +59,8 @@ class DownloadManager:
             
             self.redis_instance.set("current_data","True")
             self.redis_instance.set("date",self.current_date.strftime("%d/%m/%y"))
+
+            print("Data saved to redis",self.redis_instance.get("current_data"))
     
     
     def download_data(self):
@@ -94,14 +96,18 @@ class DownloadManager:
 
                 zip_file.close()
 
-            with zipfile.ZipFile(self.folder_dir+self.zip_file_name, 'r') as zip_ref:
-                zip_ref.extractall(self.folder_dir)
-            
             if os.path.exists(self.folder_dir+self.zip_file_name):
-                os.remove(self.folder_dir+self.zip_file_name)
+                print("extracting zip file")
+                with zipfile.ZipFile(self.folder_dir+self.zip_file_name, 'r') as zip_ref:
+                    zip_ref.extractall(self.folder_dir)
+                
+                
+               
 
-            print("Current Data downloaded")
-            self.save_to_redis(self.csv_file_name)
+                self.save_to_redis(self.csv_file_name)
+                
+                if os.path.exists(self.folder_dir+self.zip_file_name):
+                    os.remove(self.folder_dir+self.zip_file_name)
         except Exception as e:
             print("exception is ",e)
 
