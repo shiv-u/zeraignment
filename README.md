@@ -19,4 +19,4 @@ Zerodha assignment
 
 ## Running using docker-compose -
 - If you want to run this app using docker-compose, checkout to docker-master branch
-- Then run `python marketinfo/manage.py ; sudo docker-compose up --build`, then type http://localhost:8000/bhavcopy/ in your browser to view this app.
+- Then run `python marketinfo/manage.py collectstatic ; sudo docker-compose up --build`, then type http://localhost:8000/bhavcopy/ in your browser to view this app.
