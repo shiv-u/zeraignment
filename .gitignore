@@ -1,7 +1,8 @@
-marketinfo/__pycache__/*
-bhavcopyapp/__pycache__/*
-bhavcopyapp/migrations/__pycache__/*
+marketinfo/marketinfo/__pycache__/*
+bhavcopyapp/bhavcopyapp/__pycache__/*
+bhavcopyapp/bhavcopyapp/migrations/__pycache__/*
 config.log
 .gitignore.swp
 static/
-media/*.csv
+marketinfo/media/*.csv
+marketinfo/__pycache__/

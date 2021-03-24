@@ -132,7 +132,7 @@ MEDIA_ROOT = MEDIA_DIR
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = "/media/"
 
-DOCKER = False
+DOCKER = True
 
 if DOCKER:
     REDIS_HOST = 'redis'
