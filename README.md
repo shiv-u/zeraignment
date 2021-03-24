@@ -13,6 +13,7 @@ Zerodha assignment
 - Clone this repo and cd into zeraignment/
 - Run `pip install -r requirements.txt`
 - Then run `python manage.py migrate`
+- `python manage.py collectstatic`
 - Set `marketinfo/settings.py` set `DOCKER = False`
 - Then finally `python manage.py runserver localhost:8000`, then type http://localhost:8000/bhavcopy/ in your browser to view this app.
 
