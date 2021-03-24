@@ -83,28 +83,28 @@ class StorageHelper:
 
             # fetch previous day record and send the response back
 
-            self.download_data("current_data",self.current_zip_file_name,self.current_csv_file_name)
+           # self.download_data("current_data",self.current_zip_file_name,self.current_csv_file_name)
 
-            if self.redis_instance.get("current_data").decode() == "False":
-                print("Current data not available")
+            
+            print("Current data not available")
 
-                if (self.redis_instance.get("previous_data") is None or self.redis_instance.get("previous_data").decode() == "False"):
+            if (self.redis_instance.get("previous_data") is None or self.redis_instance.get("previous_data").decode() == "False"):
                     #if previous day record is not found return (None,false)
-                    print("Downloading previous data")
-                    self.download_data("previous_data",self.previous_zip_file_name,self.previous_csv_file_name)
+                print("Downloading previous data")
+                self.download_data("previous_data",self.previous_zip_file_name,self.previous_csv_file_name)
 
-                    if self.redis_instance.get("previous_data").decode() == "False":
+                if self.redis_instance.get("previous_data").decode() == "False":
                         return (None,"",False)
 
-                    else:
-                        date = self.redis_instance.get("date").decode()
-                        return (self.redis_instance.get(record_name),date,False)
-                
                 else:
-                    # return previous day records if found
-                    print("Returning previous day's data")
                     date = self.redis_instance.get("date").decode()
                     return (self.redis_instance.get(record_name),date,False)
+                
+            else:
+                # return previous day records if found
+                print("Returning previous day's data")
+                date = self.redis_instance.get("date").decode()
+                return (self.redis_instance.get(record_name),date,False)
             
         print("returning current day's data")
         date = self.redis_instance.get("date").decode()
