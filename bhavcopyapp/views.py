@@ -62,5 +62,15 @@ def save_to_csv_file(json_data,ticker_name,date):
 
     return file_name
 
+def download(request):
+    print("download file")
+    file_name = request.GET["filename"]
+    fd = open(f'./media/{file_name}',"rb")
+    response = FileResponse(fd)
+    response['Content-Disposition'] = f'attachment; filename={file_name}'
+    # response.content_disposition = f'attachment; filename={file_name}"'
+
+    return response
+
 def index(request):
     return render(request,"index.html")
