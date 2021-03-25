@@ -97,17 +97,17 @@ class StorageHelper:
                         return (None,"",False)
 
                 else:
-                    date = self.redis_instance.get("date").decode()
+                    date = self.previous_date.strftime("%d/%m/%y")
                     return (self.redis_instance.get(record_name),date,False)
                 
             else:
                 # return previous day records if found
                 print("Returning previous day's data")
-                date = self.redis_instance.get("date").decode()
+                date = self.previous_date.strftime("%d/%m/%y")
                 return (self.redis_instance.get(record_name),date,False)
             
         print("returning current day's data")
-        date = self.redis_instance.get("date").decode()
+        date = self.current_date.strftime("%d/%m/%y")
         return (self.redis_instance.get(record_name),date,True)
 
 

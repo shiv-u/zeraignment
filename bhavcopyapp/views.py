@@ -51,6 +51,7 @@ def save_to_csv_file(json_data,ticker_name,date):
     file_name = f'{ticker_name}{date}.csv'
     csv_record_file = f'./media/{file_name}'
     data_file = open(csv_record_file,"w")
+    print("file",data_file)
     csv_writer = csv.writer(data_file)
 
     header = json_data.keys()

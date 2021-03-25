@@ -25,7 +25,7 @@ MEDIA_DIR = os.path.join(BASE_DIR,"media")
 SECRET_KEY = 'nd=u1khf_(bj*w#8k9u2gjg#)qu!qch!hnlk#c%rm$7wd&t!8^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost","marketinfo-bse.herokuapp.com"]
 
